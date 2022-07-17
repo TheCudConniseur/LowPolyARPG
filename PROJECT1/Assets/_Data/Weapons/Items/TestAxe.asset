@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2d0b02215cc4d04b92466e51a1e7c0a, type: 3}
+  m_Name: TestAxe
+  m_EditorClassIdentifier: 
+  itemIcon: {fileID: 0}
+  itemName: TestAxe
+  modelPrefab: {fileID: 8958000334392438709, guid: 8e3b47edc7a69374d949873b87e60ec4, type: 3}
+  isUnarmed: 0
+  right_hand_idle: Right_Arm_Idle_01
+  left_hand_idle: Left_Arm_Idle_01
+  oh_light_attack_01: OH_Light_Attack_01
+  oh_light_attack_02: OH_Light_Attack_02
