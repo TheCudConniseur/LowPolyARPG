@@ -11,13 +11,17 @@ namespace SG
         public WeaponItem rightWeapon;
         public WeaponItem leftWeapon;
 
+        public SpellItem currentSpell;
+
         public WeaponItem unarmedWeapon;
 
         public WeaponItem[] weaponsInRightHandSlots = new WeaponItem[1];
         public WeaponItem[] weaponsInLeftHandSlots = new WeaponItem[1];
 
-        public int currentRightWeaponIndex = -1;
-        public int currentLeftWeaponIndex = -1;
+        public int currentRightWeaponIndex = 0;
+        public int currentLeftWeaponIndex = 0;
+
+        public List<WeaponItem> weaponsInventory;
 
         private void Awake()
         {
@@ -26,6 +30,8 @@ namespace SG
 
         private void Start()
         {
+            rightWeapon = weaponsInRightHandSlots[0];
+            leftWeapon = weaponsInLeftHandSlots[0];
             rightWeapon = unarmedWeapon;
             leftWeapon = unarmedWeapon;
         }
