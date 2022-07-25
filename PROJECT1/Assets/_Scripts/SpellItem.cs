@@ -10,6 +10,9 @@ namespace SG
         public GameObject spellCastFX;
         public string spellAnimation;
 
+        [Header("Spell Cost")]
+        public int focusPointCost;
+
         [Header("Spell Type")]
         public bool isFaithSpell;
         public bool isMagicSpell;
@@ -19,14 +22,15 @@ namespace SG
         [TextArea]
         public string spellDescription;
 
-        public virtual void AttemptToCastSpell(AnimatorHandler animatorHandler, PlayerStats playerStats)
+        public virtual void AttemptToCastSpell(PlayerAnimatorManager animatorHandler, PlayerStats playerStats)
         {
             Debug.Log("You attempt to cast a spell!");
         }
 
-        public virtual void SuccessfullyCastSpell(AnimatorHandler animatorHandler, PlayerStats playerStats)
+        public virtual void SuccessfullyCastSpell(PlayerAnimatorManager animatorHandler, PlayerStats playerStats)
         {
             Debug.Log("You successfully cast a spell!");
+            playerStats.DeductFocusPoints(focusPointCost);
         }
     }
 }

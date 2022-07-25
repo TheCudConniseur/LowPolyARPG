@@ -16,11 +16,19 @@ MonoBehaviour:
   itemName: TestAxe
   modelPrefab: {fileID: 8958000334392438709, guid: 8e3b47edc7a69374d949873b87e60ec4, type: 3}
   isUnarmed: 0
+  baseDamage: 25
+  criticalDamageMuiltiplier: 4
   right_hand_idle: Right_Arm_Idle_01
   left_hand_idle: Left_Arm_Idle_01
   th_idle: TH_Idle_01
   oh_light_attack_01: OH_Light_Attack_01
   oh_light_attack_02: OH_Light_Attack_02
+  th_light_attack_01: 
+  th_light_attack_02: 
   baseStamina: 35
   lightAttackMultiplier: 1
   heavyAttackMultiplier: 1.5
+  isSpellCaster: 0
+  isFaithCaster: 0
+  isPyroCaster: 0
+  isMeleeWeapon: 1

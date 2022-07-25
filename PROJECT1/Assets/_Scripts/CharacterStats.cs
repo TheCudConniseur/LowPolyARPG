@@ -14,6 +14,10 @@ namespace SG
         public float maxStamina;
         public float currentStamina;
 
+        public int focusLevel;
+        public float currentFocusPoints;
+        public float maxFocusPoints;
+
         public bool isDead;
     }
 }

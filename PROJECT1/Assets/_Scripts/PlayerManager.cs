@@ -10,6 +10,7 @@ namespace SG
         Animator anim;
         CameraHandler cameraHandler;
         PlayerStats playerStats;
+        PlayerAnimatorManager playerAnimatorManager;
         PlayerLocomotion playerLocomotion;
 
         InteractableUI interactableUI;
@@ -30,11 +31,9 @@ namespace SG
         private void Awake()
         {
             cameraHandler = FindObjectOfType<CameraHandler>();
-        }
-
-        void Start()
-        {
+            backStabCollider = GetComponentInChildren<BackStabCollider>();
             inputHandler = GetComponent<InputHandler>();
+            playerAnimatorManager = GetComponentInChildren<PlayerAnimatorManager>();
             anim = GetComponentInChildren<Animator>();
             playerStats = GetComponent<PlayerStats>();
             playerLocomotion = GetComponent<PlayerLocomotion>();
@@ -52,8 +51,10 @@ namespace SG
             isUsingLeftHand = anim.GetBool("isUsingLeftHand");
             isInvulerable = anim.GetBool("isInvulnerable");
             anim.SetBool("isInAir", isInAir);
+            anim.SetBool("isDead", playerStats.isDead);
 
             inputHandler.TickInput(delta);
+            playerAnimatorManager.canRotate = anim.GetBool("canRotate");
             playerLocomotion.HandleRollingAndSprinting(delta);
             playerLocomotion.HandleJumping();
             playerStats.RegenerateStamina();
@@ -67,6 +68,7 @@ namespace SG
 
             playerLocomotion.HandleFalling(delta, playerLocomotion.moveDirection);
             playerLocomotion.HandleMovement(delta);
+            playerLocomotion.HandleRotation(delta);
         }
 
         private void LateUpdate()
