@@ -31,7 +31,7 @@ namespace SG
         private void Awake()
         {
             cameraHandler = FindObjectOfType<CameraHandler>();
-            backStabCollider = GetComponentInChildren<BackStabCollider>();
+            backStabCollider = GetComponentInChildren<CriticalDamageCollider>();
             inputHandler = GetComponent<InputHandler>();
             playerAnimatorManager = GetComponentInChildren<PlayerAnimatorManager>();
             anim = GetComponentInChildren<Animator>();
@@ -76,6 +76,7 @@ namespace SG
             inputHandler.rollFlag = false;
             inputHandler.rb_Input = false;
             inputHandler.rt_Input = false;
+            inputHandler.lt_Input = false;
             inputHandler.d_Pad_Up = false;
             inputHandler.d_Pad_Down = false;
             inputHandler.d_Pad_Left = false;
@@ -97,6 +98,8 @@ namespace SG
                 playerLocomotion.inAirTimer = playerLocomotion.inAirTimer + Time.deltaTime;
             }
         }
+
+        #region Player Interactions
 
         public void CheckForInteractableObject()
         {
@@ -134,6 +137,15 @@ namespace SG
                 }
             }
         }
+
+        public void OpenChestInteraction(Transform playerStandsHereWhenOpeningChest)
+        {
+            playerLocomotion.rigidbody.velocity = Vector3.zero; //Stops the player from ice skating
+            transform.position = playerStandsHereWhenOpeningChest.transform.position;
+            playerAnimatorManager.PlayTargetAnimation("Open Chest", true);            
+        }
+
+        #endregion
 
 
     }

@@ -142,5 +142,10 @@ namespace SG
 
             focusPointsBar.SetCurrentFocusPoints(currentFocusPoints);
         }
+
+        public void AddSouls(int souls)
+        {
+            soulCount = soulCount + souls;
+        }
     }
 }

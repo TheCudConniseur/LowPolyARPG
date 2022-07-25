@@ -6,11 +6,13 @@ namespace SG
 {
     public class EnemyStats : CharacterStats
     {
-        Animator animator;
+        EnemyAnimatorManager enemyAnimatorManager;
+
+        public int soulsAwardedOnDeath = 50;
 
         private void Awake()
         {
-            animator = GetComponentInChildren<Animator>();
+            enemyAnimatorManager = GetComponentInChildren<EnemyAnimatorManager>();
         }
 
         void Start()
@@ -43,15 +45,19 @@ namespace SG
 
             currentHealth = currentHealth - damage;
 
-            animator.Play("Damage_01");
+            enemyAnimatorManager.PlayTargetAnimation("Damage_01", true);
 
             if (currentHealth <= 0)
             {
-                currentHealth = 0;
-                animator.Play("Dead_01");
-                isDead = true;
-                //HANDLE PLAYER DEATH
+                HandleDeath();
             }
+        }
+
+        private void HandleDeath()
+        {
+            currentHealth = 0;
+            enemyAnimatorManager.PlayTargetAnimation("Dead_01", true);
+            isDead = true;
         }
     }
 }

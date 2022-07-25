@@ -22,6 +22,42 @@ namespace SG
             enemyManager.pendingCriticalDamage = 0;
         }
 
+        public void EnableIsParrying()
+        {
+            enemyManager.isParrying = true;
+        }
+
+        public void DisableIsParrying()
+        {
+            enemyManager.isParrying = false;
+        }
+
+        public void EnableCanBeRiposted()
+        {
+            enemyManager.canBeRiposted = true;
+        }
+
+        public void DisableCanBeRiposted()
+        {
+            enemyManager.canBeRiposted = false;
+        }
+
+        public void AwardSoulsOnDeath()
+        {
+            PlayerStats playerStats = FindObjectOfType<PlayerStats>();
+            SoulCountBar soulCountBar = FindObjectOfType<SoulCountBar>();
+
+            if (playerStats != null)
+            {
+                playerStats.AddSouls(enemyStats.soulsAwardedOnDeath);
+
+                if (soulCountBar != null)
+                {
+                    soulCountBar.SetSoulCountText(playerStats.soulCount);
+                }
+            }
+        }
+
         private void OnAnimatorMove()
         {
             float delta = Time.deltaTime;

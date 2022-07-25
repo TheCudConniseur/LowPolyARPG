@@ -14,9 +14,11 @@ namespace SG
         public float maxStamina;
         public float currentStamina;
 
-        public int focusLevel;
+        public int focusLevel = 10;
         public float currentFocusPoints;
         public float maxFocusPoints;
+
+        public int soulCount = 0;
 
         public bool isDead;
     }

@@ -13,7 +13,9 @@ namespace SG
         InputHandler inputHandler;
         WeaponSlotManager weaponSlotManager;
         public string lastAttack;
+
         LayerMask backStabLayer = 1 << 12;
+        LayerMask riposteLayer = 1 << 13;
 
         private void Awake()
         {
@@ -94,6 +96,18 @@ namespace SG
                 PerformRBMagicAction(playerInventory.rightWeapon);
             }
         }
+
+        public void HandleLTAction()
+        {
+            if (playerInventory.leftWeapon.isShieldWeapon)
+            {
+                PerformLTWeaponArt(inputHandler.twoHandFlag);
+            }
+            else if (playerInventory.leftWeapon.isMeleeWeapon)
+            {
+                //do a light attack
+            }
+        }    
         #endregion
 
         #region Attack Actions
@@ -139,6 +153,21 @@ namespace SG
             }
         }
 
+        private void PerformLTWeaponArt(bool isTwoHanding)
+        {
+            if (playerManager.isInteracting)
+                return;
+
+            if (isTwoHanding)
+            {
+                //If we are two handing preform weapon art for right weapon
+            }
+            else
+            {
+                animatorHandler.PlayTargetAnimation(playerInventory.leftWeapon.weapon_art, true);
+            }
+        }
+
         private void SuccessfullyCastSpell()
         {
             playerInventory.currentSpell.SuccessfullyCastSpell(animatorHandler, playerStats);
@@ -162,7 +191,7 @@ namespace SG
                 if (enemyCharacterManager != null)
                 {
                     //CHECK FOR TEAM I.D (So you cant back stab friends or yourself?
-                    playerManager.transform.position = enemyCharacterManager.backStabCollider.backStabberStandPoint.position;
+                    playerManager.transform.position = enemyCharacterManager.backStabCollider.criticalDamagerStandPosition.position;
 
                     Vector3 rotationDirection = playerManager.transform.root.eulerAngles;
                     rotationDirection = hit.transform.position - playerManager.transform.position;
@@ -178,6 +207,31 @@ namespace SG
                     animatorHandler.PlayTargetAnimation("Back Stab", true);
                     enemyCharacterManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Back Stabbed", true);
                     //do damage
+                }
+            }
+            else if (Physics.Raycast(inputHandler.criticalAttackRayCastStartPoint.position, transform.TransformDirection(Vector3.forward), out hit, 0.7f, riposteLayer))
+            {
+                //CHECK FOR TEAM I.D
+                CharacterManager enemyCharacterManager = hit.transform.gameObject.GetComponentInParent<CharacterManager>();
+                DamageCollider rightWeapon = weaponSlotManager.rightHandDamageCollider;
+
+                if (enemyCharacterManager != null && enemyCharacterManager.canBeRiposted)
+                {
+                    playerManager.transform.position = enemyCharacterManager.riposteCollider.criticalDamagerStandPosition.position;
+
+                    Vector3 rotationDirection = playerManager.transform.root.eulerAngles;
+                    rotationDirection = hit.transform.position - playerManager.transform.position;
+                    rotationDirection.y = 0;
+                    rotationDirection.Normalize();
+                    Quaternion tr = Quaternion.LookRotation(rotationDirection);
+                    Quaternion targetRotation = Quaternion.Slerp(playerManager.transform.rotation, tr, 500 * Time.deltaTime);
+                    playerManager.transform.rotation = targetRotation;
+
+                    int criticalDamage = playerInventory.rightWeapon.criticalDamageMuiltiplier * rightWeapon.currentWeaponDamage;
+                    enemyCharacterManager.pendingCriticalDamage = criticalDamage;
+
+                    animatorHandler.PlayTargetAnimation("Riposte", true);
+                    enemyCharacterManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("Riposted", true);
                 }
             }
         }

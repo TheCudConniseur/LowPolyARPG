@@ -10,6 +10,9 @@ namespace SG
 
         public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorManager enemyAnimatorManager)
         {
+            if (enemyManager.isInteracting)
+                return this;
+
             if (enemyManager.isPreformingAction)
             {
                 enemyAnimatorManager.anim.SetFloat("Vertical", 0, 0.1f, Time.deltaTime);
@@ -26,8 +29,6 @@ namespace SG
             }
 
             HandleRotateTowardsTarget(enemyManager);
-            enemyManager.navmeshAgent.transform.localPosition = Vector3.zero;
-            enemyManager.navmeshAgent.transform.localRotation = Quaternion.identity;
 
             if (distanceFromTarget <= enemyManager.maximumAttackRange)
             {
@@ -54,7 +55,7 @@ namespace SG
                 }
 
                 Quaternion targetRotation = Quaternion.LookRotation(direction);
-                enemyManager.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, enemyManager.rotationSpeed / Time.deltaTime);
+                enemyManager.transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, enemyManager.rotationSpeed / Time.deltaTime);
             }
             //Rotate with pathfinding (navmesh)
             else
@@ -65,7 +66,7 @@ namespace SG
                 enemyManager.navmeshAgent.enabled = true;
                 enemyManager.navmeshAgent.SetDestination(enemyManager.currentTarget.transform.position);
                 enemyManager.enemyRigidBody.velocity = targetVelocity;
-                enemyManager.transform.rotation = Quaternion.Slerp(enemyManager.transform.rotation, enemyManager.navmeshAgent.transform.rotation, enemyManager.rotationSpeed / Time.deltaTime);
+                enemyManager.transform.rotation = Quaternion.Lerp(enemyManager.transform.rotation, enemyManager.navmeshAgent.transform.rotation, enemyManager.rotationSpeed / Time.deltaTime);
             }
         }
     }
